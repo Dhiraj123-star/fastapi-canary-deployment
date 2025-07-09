@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fastapi
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: fastapi
+        version: v1
+    spec:
+      containers:
+        - name: fastapi-v1-container
+          image: fastapi-canary:v1   # ⬅️ LOCAL image tag
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "250m"
+              memory: "128Mi"
