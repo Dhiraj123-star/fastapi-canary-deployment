@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding-top: 100px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+body.v1 {
+    background-color: skyblue;
+}
+
+body.v2 {
+    background-color: lightgreen;
+}
+
+h1 {
+    font-size: 40px;
+    color: #333;
+}
+
+.badge {
+    background: black;
+    color: white;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 8px;
+    font-weight: bold;
+}
