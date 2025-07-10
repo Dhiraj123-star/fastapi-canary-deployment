@@ -1,53 +1,57 @@
-
 # 🚀 FastAPI Canary Deployment on Kubernetes
 
-A **production-grade canary deployment** system powered by **FastAPI**, **Docker**, and **Kubernetes (Minikube)**. This project demonstrates an advanced deployment strategy where traffic is gradually shifted to a new application version (v2) while monitoring performance alongside the existing stable version (v1).
+A **production-grade canary deployment system** built with **FastAPI**, **Docker**, and **Kubernetes (Minikube)**. This project simulates modern DevOps practices by gradually shifting traffic from a stable app version (`v1`) to a new release (`v2`) using pod distribution and Kubernetes services.
 
 ---
 
 ## 🎯 Core Functionality
 
 ### ✅ Canary Deployment Strategy
-- Simulates **progressive rollout** by running multiple pods of `v1` (stable) and a single pod of `v2` (canary).
-- Kubernetes `Service` distributes traffic across both versions based on pod count (e.g., 3 pods for v1 and 1 pod for v2 results in ~25% traffic to v2).
-- Ideal for reducing production risks and enabling **A/B testing** or **safe version testing**.
+- Uses two Kubernetes Deployments (`v1` and `v2`) with a shared `app: fastapi` label.
+- Traffic is **automatically split** by pod count: e.g., 3 pods for v1 and 1 pod for v2 simulates a ~75/25 split.
+- Enables **progressive delivery**, A/B testing, and **safe rollout strategies**.
 
-### ✅ FastAPI Web App with Visual Indicators
-- Dynamic response shows which version (v1 or v2) served the request.
-- Clean, responsive UI with unique background color for each version (e.g., skyblue for v1, lightgreen for v2).
-- Implements **Jinja2 templates** and **static CSS files** for UI rendering.
+### ✅ FastAPI Web App with Version Visibility
+- Serves a **Jinja2-powered HTML page** indicating which version responded.
+- UI styles are controlled via separate static CSS file (`style.css`) based on version:
+  - `v1` ➜ Sky Blue background
+  - `v2` ➜ Light Green background
+- Demonstrates how frontend feedback helps in tracking deployment versions.
 
-### ✅ Dockerized for Portability
-- Each version is built as a separate Docker image using the same base but tagged appropriately (`v1`, `v2`).
-- Runs inside Kubernetes using Docker images that are either pulled from DockerHub or built directly inside Minikube.
+### ✅ Dockerized and Cloud-Ready
+- Each version is built as a separate image and tagged as `v1` and `v2`.
+- Docker images are pushed to [Docker Hub](https://hub.docker.com/r/dhiraj918106/fastapi-canary) (`dhiraj918106/fastapi-canary:{tag}`).
+- Kubernetes pods **pull from Docker Hub**, making it portable and CI/CD-friendly.
 
-### ✅ Kubernetes Native Deployments
-- Uses two separate Kubernetes Deployments for v1 and v2.
-- A single Service routes traffic to both deployments using a shared label selector (`app: fastapi`).
-- Resource requests and limits are configured for efficient pod scheduling and cluster resource control.
+### ✅ Kubernetes Deployments (Minikube)
+- Separate `deployment-v1.yaml` and `deployment-v2.yaml` files.
+- Includes:
+  - `imagePullPolicy: Always`
+  - CPU/memory resource requests & limits for fair scheduling
+- Shared service (`fastapi-service.yaml`) sends requests to both versions based on replica count.
 
-### ✅ Designed for Local Development with Minikube
-- Uses `minikube docker-env` to build images directly in Minikube’s Docker daemon.
-- Fully tested with local Kubernetes cluster — no external cloud provider required.
-- Ideal for showcasing **DevOps practices**, CI/CD pipelines, and traffic-splitting strategies to recruiters or interviewers.
+### ✅ Designed for Local Kubernetes Testing (Minikube)
+- Perfect for development, interviews, or demos without needing cloud infrastructure.
+- Compatible with `minikube service` for local URL access.
+- Tested and verified to work end-to-end.
 
 ---
 
-## 💼 Why This Project Matters to Recruiters
+## 💼 Why This Project Stands Out to Recruiters
 
-- Demonstrates **hands-on expertise with cloud-native deployment strategies**.
-- Reflects **real-world practices** in production-grade rollouts and rollback-ready architectures.
-- Proves familiarity with **containerization (Docker)** and **Kubernetes orchestration**.
-- Clean, maintainable, and modular — ready to be scaled or integrated with CI/CD pipelines or service meshes like Istio for weighted routing.
+- 💡 **Demonstrates modern deployment patterns** used in real-world production environments.
+- 🐳 Shows proficiency with **Docker**, container tagging, and public registries (Docker Hub).
+- ☸️ Validates hands-on **Kubernetes experience** (deployments, services, resource management).
+- ⚙️ Clean separation of versions, HTML, and styling using professional code practices.
+- ✅ Ready to scale, integrate into GitHub Actions, or extend into service mesh routing (Istio, Linkerd).
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **FastAPI**: Modern, high-performance Python web framework.
-- **Docker**: Containerized deployment for consistent, reproducible builds.
-- **Kubernetes (Minikube)**: Local K8s cluster to simulate production-like environments.
-- **HTML + CSS**: Lightweight UI with environment-based styling.
-- **Jinja2**: Server-side templating for clean and dynamic rendering.
+- **FastAPI** – High-performance web API in Python.
+- **Docker & Docker Hub** – Container packaging and cloud image registry.
+- **Kubernetes (Minikube)** – Local K8s cluster for simulating production environments.
+- **Jinja2 + HTML + CSS** – Server-rendered HTML with static styling for version awareness.
 
 ---
