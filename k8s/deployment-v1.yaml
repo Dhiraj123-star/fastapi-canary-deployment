@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: fastapi-v1-container
-          image: fastapi-canary:v1   # ⬅️ LOCAL image tag
+          image: dhiraj918106/fastapi-canary:v1  # ✅ Docker Hub image
           ports:
             - containerPort: 80
           resources:
