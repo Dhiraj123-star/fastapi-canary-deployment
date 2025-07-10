@@ -1,57 +1,68 @@
 # 🚀 FastAPI Canary Deployment on Kubernetes
 
-A **production-grade canary deployment system** built with **FastAPI**, **Docker**, and **Kubernetes (Minikube)**. This project simulates modern DevOps practices by gradually shifting traffic from a stable app version (`v1`) to a new release (`v2`) using pod distribution and Kubernetes services.
+A **production-grade canary deployment system** powered by **FastAPI**, **Docker**, and **Kubernetes (Minikube)**. This project demonstrates real-world DevOps strategies where traffic is gradually shifted from a stable version (`v1`) to a new release (`v2`) using Kubernetes deployments and services — with **zero downtime**.
 
 ---
 
 ## 🎯 Core Functionality
 
 ### ✅ Canary Deployment Strategy
-- Uses two Kubernetes Deployments (`v1` and `v2`) with a shared `app: fastapi` label.
-- Traffic is **automatically split** by pod count: e.g., 3 pods for v1 and 1 pod for v2 simulates a ~75/25 split.
-- Enables **progressive delivery**, A/B testing, and **safe rollout strategies**.
-
-### ✅ FastAPI Web App with Version Visibility
-- Serves a **Jinja2-powered HTML page** indicating which version responded.
-- UI styles are controlled via separate static CSS file (`style.css`) based on version:
-  - `v1` ➜ Sky Blue background
-  - `v2` ➜ Light Green background
-- Demonstrates how frontend feedback helps in tracking deployment versions.
-
-### ✅ Dockerized and Cloud-Ready
-- Each version is built as a separate image and tagged as `v1` and `v2`.
-- Docker images are pushed to [Docker Hub](https://hub.docker.com/r/dhiraj918106/fastapi-canary) (`dhiraj918106/fastapi-canary:{tag}`).
-- Kubernetes pods **pull from Docker Hub**, making it portable and CI/CD-friendly.
-
-### ✅ Kubernetes Deployments (Minikube)
-- Separate `deployment-v1.yaml` and `deployment-v2.yaml` files.
-- Includes:
-  - `imagePullPolicy: Always`
-  - CPU/memory resource requests & limits for fair scheduling
-- Shared service (`fastapi-service.yaml`) sends requests to both versions based on replica count.
-
-### ✅ Designed for Local Kubernetes Testing (Minikube)
-- Perfect for development, interviews, or demos without needing cloud infrastructure.
-- Compatible with `minikube service` for local URL access.
-- Tested and verified to work end-to-end.
+- Two Kubernetes Deployments: `v1` (stable) and `v2` (canary).
+- Shared `app: fastapi` selector in the Kubernetes Service distributes traffic across pods.
+- Pod count determines the **traffic distribution** (e.g., 3 pods for `v1`, 1 pod for `v2` = ~75%/25%).
+- Ideal for **progressive rollout**, **A/B testing**, and minimizing production risk.
 
 ---
 
-## 💼 Why This Project Stands Out to Recruiters
+### ✅ FastAPI App with Visual Feedback
+- Built with **FastAPI**, renders an HTML page showing the current version (v1 or v2).
+- UI is version-aware using **separate CSS styles**:
+  - `v1` → Sky Blue background
+  - `v2` → Light Green background
+- Static assets are served via `StaticFiles`, and templates use **Jinja2** for dynamic version injection.
 
-- 💡 **Demonstrates modern deployment patterns** used in real-world production environments.
-- 🐳 Shows proficiency with **Docker**, container tagging, and public registries (Docker Hub).
-- ☸️ Validates hands-on **Kubernetes experience** (deployments, services, resource management).
-- ⚙️ Clean separation of versions, HTML, and styling using professional code practices.
-- ✅ Ready to scale, integrate into GitHub Actions, or extend into service mesh routing (Istio, Linkerd).
+---
+
+### ✅ Dockerized with CI/CD Support
+- Uses a single `main.template.py` and injects version via **GitHub Actions**.
+- Docker images tagged as `v1`, `v2` and pushed to Docker Hub:
+  - 👉 `dhiraj918106/fastapi-canary:v1`
+  - 👉 `dhiraj918106/fastapi-canary:v2`
+- **CI/CD pipeline** (via GitHub Actions) automates:
+  - Dynamic version injection
+  - Docker build & push
+  - Ready for deployment on Kubernetes
+
+---
+
+### ✅ Kubernetes Native Setup (Minikube)
+- Two separate manifests: `deployment-v1.yaml`, `deployment-v2.yaml`
+- Uses:
+  - `imagePullPolicy: Always`
+  - Proper CPU/memory resource management
+- `fastapi-service.yaml` exposes both versions under a single NodePort service.
+
+---
+
+### ✅ Automated Local Deployment Script
+- Includes a smart shell script: `deploy.sh`
+- Automates:
+  - Cleanup of old deployments
+  - Apply K8s manifests
+  - Wait for all pods to be in `Ready` state
+  - Open the app in the browser once live
+- Perfect for **quick local testing** and demo preparation.
+
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **FastAPI** – High-performance web API in Python.
-- **Docker & Docker Hub** – Container packaging and cloud image registry.
-- **Kubernetes (Minikube)** – Local K8s cluster for simulating production environments.
-- **Jinja2 + HTML + CSS** – Server-rendered HTML with static styling for version awareness.
+- **FastAPI** – High-performance Python web API framework
+- **Docker** – Containerization and image management
+- **Docker Hub** – Public image registry
+- **Kubernetes + Minikube** – Local cloud-native orchestration
+- **GitHub Actions** – CI/CD for image builds and deployment automation
+- **Jinja2 + HTML + CSS** – Version-aware UI with clean styling
 
 ---
